@@ -1,4 +1,4 @@
-# ModerLauncher 🚀
+# ModerLauncher GitHub
 
 <p align="center">
   <img src="assets/logo/logo.png" alt="ModerLauncher Logo" width="200"/>
