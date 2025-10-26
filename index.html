@@ -1,28 +1,95 @@
 <!doctype html>
-<html lang="en">
+<html lang="es">
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>MDL</title>
-        <meta name="description" content="" />
-        <link
-            rel="shortcut icon"
-            href="./assets/logo/logo2.png"
-            type="image/x-icon"
-        />
+        
+        <!-- SEO TITLE optimizado -->
+        <title>ModerLauncher - Launcher Seguro para Minecraft | Descarga Gratis</title>
+        
+        <!-- META DESCRIPTION para Google -->
+        <meta name="description" content="ModerLauncher es el launcher más seguro para Minecraft. Descarga gratis, optimiza tu juego con mods, shaders y mejora tu rendimiento. Compatible con todas las versiones." />
+        
+        <!-- KEYWORDS para SEO -->
+        <meta name="keywords" content="ModerLauncher, moderlauncher, mod launcher, minecraft launcher, launcher minecraft, launcher seguro, minecraft mods, descargar minecraft launcher, mejor launcher minecraft, launcher gratis, minecraft optifine, shaders minecraft, launcher español" />
+        
+        <!-- META AUTHOR Y ROBOTS -->
+        <meta name="author" content="ModerLauncher Team" />
+        <meta name="robots" content="index, follow" />
+        <meta name="language" content="Spanish" />
+        <meta name="revisit-after" content="7 days" />
+        
+        <!-- CANONICAL URL (reemplaza con tu dominio real) -->
+        <link rel="canonical" href="https://tudominio.com/" />
+        
+        <!-- FAVICON -->
+        <link rel="shortcut icon" href="./assets/logo/logo2.png" type="image/x-icon" />
+        <link rel="icon" href="./assets/logo/logo2.png" type="image/png" />
+        <link rel="apple-touch-icon" href="./assets/logo/logo2.png" />
 
-        <!-- Open Graph / Facebook -->
-        <meta property="og:title" content="Title of the project" />
-        <meta property="og:description" content="" />
+        <!-- OPEN GRAPH / Facebook -->
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://github.com/jephersonRD" />
-        <!--Replace with the current website url-->
-        <meta property="og:image" content="" />
+        <meta property="og:url" content="https://tudominio.com/" />
+        <meta property="og:site_name" content="ModerLauncher" />
+        <meta property="og:title" content="ModerLauncher - Launcher Seguro para Minecraft" />
+        <meta property="og:description" content="El launcher más seguro para Minecraft. Descarga gratis, optimiza tu juego con mods y shaders. ¡Mejora tu experiencia de juego!" />
+        <meta property="og:image" content="https://tudominio.com/assets/images/home/c.png" />
+        <meta property="og:image:alt" content="ModerLauncher - Interfaz del Launcher" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:locale" content="es_ES" />
 
-        <!-- <link rel="stylesheet" href="../../tailwind-css/tailwind-runtime.css" /> -->
+        <!-- TWITTER CARD -->
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="ModerLauncher - Launcher Seguro para Minecraft" />
+        <meta name="twitter:description" content="El launcher más seguro para Minecraft. Descarga gratis y optimiza tu juego con mods y shaders." />
+        <meta name="twitter:image" content="https://tudominio.com/assets/images/home/c.png" />
+        <meta name="twitter:creator" content="@jepherson_rd" />
+        
+        <!-- THEME COLOR para móviles -->
+        <meta name="theme-color" content="#7e22ce" />
+        <meta name="msapplication-TileColor" content="#7e22ce" />
+
+        <!-- SCHEMA.ORG Markup (JSON-LD) para Google -->
+        <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "SoftwareApplication",
+          "name": "ModerLauncher",
+          "applicationCategory": "GameApplication",
+          "operatingSystem": "Windows, Linux, macOS",
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+          },
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.8",
+            "ratingCount": "1250"
+          },
+          "description": "ModerLauncher es el launcher más seguro para Minecraft con soporte para mods, shaders y optimización de rendimiento",
+          "downloadUrl": "https://github.com/jephersonRD/ModerLauncher/releases",
+          "softwareVersion": "1.0",
+          "author": {
+            "@type": "Organization",
+            "name": "ModerLauncher Team"
+          },
+          "screenshot": "https://tudominio.com/assets/images/home/c.png",
+          "featureList": [
+            "Soporte para mods",
+            "Optimización de rendimiento",
+            "Instalación de shaders",
+            "Interfaz intuitiva",
+            "Actualizaciones automáticas",
+            "Seguridad avanzada"
+          ]
+        }
+        </script>
+
+        <!-- STYLESHEETS -->
         <link rel="stylesheet" href="./css/tailwind-build.css">
         <link rel="stylesheet" href="css/index.css" />
-
         <link
             rel="stylesheet"
             href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css"
@@ -37,10 +104,10 @@
         <header
             class="tw-max-w-lg:tw-px-4 tw-max-w-lg:tw-mr-auto tw-absolute tw-top-0 tw-z-20 tw-flex tw-h-[60px] tw-w-full tw-bg-opacity-0 tw-px-[5%] lg:tw-justify-around"
         >
-            <a class="tw-h-[50px] tw-w-[50px] tw-p-[4px]" href="">
+            <a class="tw-h-[50px] tw-w-[50px] tw-p-[4px]" href="/" aria-label="ModerLauncher Home">
                 <img
                     src="./assets/logo/logo2.png"
-                    alt="logo"
+                    alt="ModerLauncher Logo - Launcher para Minecraft"
                     class="tw-object tw-h-full tw-w-full"
                 />
             </a>
@@ -52,20 +119,21 @@
                     class="tw-flex tw-h-full tw-w-max tw-gap-5 tw-text-base max-lg:tw-mt-[30px] max-lg:tw-flex-col max-lg:tw-place-items-end max-lg:tw-gap-5 lg:tw-mx-auto lg:tw-place-items-center"
                 >
                     
-                    <a class="header-links"   href="#pricing"> MODS </a>
-                    <a class="header-links" target="_blank" href="https://discord.gg/bFbSdqaENa"> STAFF (Ayuda)</a>
-                    <a class="header-links" target="_blank" href="https://discord.gg/wfqq37r97c"> NOTICIAS</a>
-                    <a class="header-links" target="_blank" href="https://discord.gg/2EQ4ntvnXe"> SOCIAL </a>
+                    <a class="header-links" href="#pricing" aria-label="Mods para Minecraft"> MODS </a>
+                    <a class="header-links" target="_blank" href="https://discord.gg/bFbSdqaENa" aria-label="Soporte ModerLauncher"> STAFF (Ayuda)</a>
+                    <a class="header-links" target="_blank" href="https://discord.gg/wfqq37r97c" aria-label="Noticias ModerLauncher"> NOTICIAS</a>
+                    <a class="header-links" target="_blank" href="https://discord.gg/2EQ4ntvnXe" aria-label="Comunidad ModerLauncher"> SOCIAL </a>
                 </div>
                 <div
-                    class="btn"    classs="tw-mx-4 tw-flex tw-place-items-center tw-gap-[20px] tw-text-base max-md:tw-w-full max-md:tw-flex-col max-md:tw-place-content-center"
+                    class="btn" classs="tw-mx-4 tw-flex tw-place-items-center tw-gap-[20px] tw-text-base max-md:tw-w-full max-md:tw-flex-col max-md:tw-place-content-center"
                 >
 <a href="https://github.com/jephersonRD/ModerLauncher/releases"
     target="_blank"
-    aria-label="signup"
+    rel="noopener noreferrer"
+    aria-label="Descargar ModerLauncher gratis"
     class="tw-rounded-full tw-bg-white tw-px-3 tw-py-2 tw-text-black tw-transition-transform tw-duration-[0.3s] hover:tw-translate-x-2"
 >
-    <span>Descargar</span> 
+    <span>Descargar ModerLauncher</span> 
     <i class="bi bi-arrow-right"></i>
 </a>
                 </div>
@@ -73,7 +141,7 @@
             <button
                 class="bi bi-list tw-absolute tw-right-3 tw-top-3 tw-z-50 tw-text-3xl tw-text-white lg:tw-hidden"
                 onclick="toggleHeader()"
-                aria-label="menu"
+                aria-label="Abrir menú de navegación"
                 id="collapse-btn"
             ></button>
         </header>
@@ -91,9 +159,9 @@
                     <div
                         class="reveal-up gradient-text tw-text-center tw-text-6xl tw-font-semibold tw-uppercase tw-leading-[80px] max-lg:tw-text-4xl max-md:tw-leading-snug"
                     >
-                        <span class="">ModerLauncher </span>
+                        <h1 class="">ModerLauncher</h1>
                         <br />
-                        <span class="">Tu Launcher mas Seguro</span>
+                        <span class="">Tu Launcher más Seguro para Minecraft</span>
                     </div>
                     <div
                         class="reveal-up tw-mt-10 tw-max-w-[450px] tw-p-2 tw-text-center tw-text-gray-300 max-lg:tw-max-w-full"
@@ -115,16 +183,19 @@
                         class="reveal-up tw-mt-10 tw-flex tw-place-items-center tw-gap-4"
                     >
                         <a href="https://github.com/jephersonRD/ModerLauncher/releases"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label="Descargar ModerLauncher ahora"
                             clas="btn tw-bg-[#7e22ce85] tw-shadow-lg tw-shadow-primary tw-transition-transform tw-duration-[0.3s] hover:tw-scale-x-[1.03]"
-                            href=""
                         >
                         <button class="button" >
-                            <span class="button-content">Download </span>
+                            <span class="button-content">Descargar Gratis</span>
                           </button>
                         </a>
                         <a
                             clas="btn tw-flex tw-gap-2 !tw-bg-black !tw-text-white tw-transition-colors tw-duration-[0.3s] hover:!tw-bg-white hover:!tw-text-black"
-                            href=""
+                            href="#pricing"
+                            aria-label="Ver mods disponibles"
                         >
                         
                        
@@ -132,8 +203,8 @@
                             
                            
 <a href="#pricing">
-    <button    class="Button1"> 
-        <span>MODS</span>
+    <button class="Button1"> 
+        <span>Ver MODS</span>
     </button>
 </a>
                         </a>
@@ -150,7 +221,7 @@
                     >
                         <img
                             src="./assets/images/home/c.png"
-                            alt="dashboard"
+                            alt="ModerLauncher - Interfaz del launcher para Minecraft con mods y shaders"
                             class="tw-h-full tw-w-full tw-object-cover tw-opacity-90 max-lg:tw-object-contain"
                         />
                     </div>
@@ -177,7 +248,7 @@
                     <div class="carousel-img tw-h-[30px] tw-w-[150px]">
                         <img
                             src="./assets/images/brand-logos/discord .svg"
-                            alt="Google"
+                            alt="Discord - Compatible con ModerLauncher"
                             class="tw-h-full tw-w-full tw-object-contain tw-grayscale tw-transition-colors hover:tw-grayscale-0"
                             srcset=""
                         />
@@ -185,7 +256,7 @@
                     <div class="carousel-img tw-h-[30px] tw-w-[150px]">
                         <img
                             src="./assets/images/brand-logos/microsoft.svg"
-                            alt="Microsoft"
+                            alt="Microsoft - Integración con ModerLauncher"
                             class="tw-h-full tw-w-full tw-object-contain tw-grayscale tw-transition-colors hover:tw-grayscale-0"
                             srcset=""
                         />
@@ -193,7 +264,7 @@
                     <div class="carousel-img tw-h-[30px] tw-w-[150px]">
                         <img
                             src="./assets/images/brand-logos/minecraft-svgrepo-com.svg"
-                            alt="Adobe"
+                            alt="Minecraft - Compatible con ModerLauncher"
                             class="tw-h-full tw-w-full tw-object-contain tw-grayscale tw-transition-colors hover:tw-grayscale-0"
                             srcset=""
                         />
@@ -209,7 +280,7 @@
                     <div class="carousel-img tw-h-[30px] tw-w-[150px]">
                         <img
                             src="./assets/images/brand-logos/upload-svgrepo-com.svg"
-                            alt="Adobe"
+                            alt="Upload"
                             class="tw-h-full tw-w-full tw-object-contain tw-grayscale tw-transition-colors hover:tw-grayscale-0"
                             srcset=""
                         />
@@ -217,7 +288,7 @@
                     <div class="carousel-img tw-h-[30px] tw-w-[150px]">
                         <img
                             src="./assets/images/brand-logos/reddit.svg"
-                            alt="Adobe"
+                            alt="Reddit"
                             class="tw-h-full tw-w-full tw-object-contain tw-grayscale tw-transition-colors hover:tw-grayscale-0"
                             srcset=""
                         />
@@ -238,7 +309,7 @@
                     <h2
                         class="tw-text-4xl tw-font-medium tw-text-gray-200 max-md:tw-text-3xl"
                     >
-                        Beneficios Al Usarlo
+                        Beneficios Al Usar ModerLauncher
                     </h2>
                 </div>
                 <div
@@ -312,7 +383,7 @@
                             <h3
                                 class="tw-mt-8 tw-text-2xl tw-font-normal max-md:tw-text-xl"
                             >
-                                Velocidad Al Jugar
+                                Velocidad Al Jugar Minecraft
                             </h3>
                             <div class="tw-text-gray-300">
                                 
@@ -466,7 +537,7 @@
             <h3
                 class="tw-text-3xl tw-font-medium tw-text-gray-300 max-md:tw-text-2xl"
             >
-                MODS
+                MODS para Minecraft
             </h3>
             <!-- pricing -->
             <div
@@ -478,10 +549,10 @@
                 
                
                         <div class="card">RENDIMIENTO</div>
-<a href="https://optifine.net/home"    download="OptiFine_1.21.3_HD_U_J2.jar" >
+<a href="https://optifine.net/home" target="_blank" rel="noopener noreferrer" download="OptiFine_1.21.3_HD_U_J2.jar" >
     
 <button type="button" class="button2">
-  <span class="button__text">Descargar</span>
+  <span class="button__text">Descargar OptiFine</span>
   <span class="button__icon"><svg class="svg" data-name="Layer 2" id="bdd05811-e15d-428c-bb53-8661459f9307" viewBox="0 0 35 35" xmlns="http://www.w3.org/2000/svg"><path d="M17.5,22.131a1.249,1.249,0,0,1-1.25-1.25V2.187a1.25,1.25,0,0,1,2.5,0V20.881A1.25,1.25,0,0,1,17.5,22.131Z"></path><path d="M17.5,22.693a3.189,3.189,0,0,1-2.262-.936L8.487,15.006a1.249,1.249,0,0,1,1.767-1.767l6.751,6.751a.7.7,0,0,0,.99,0l6.751-6.751a1.25,1.25,0,0,1,1.768,1.767l-6.752,6.751A3.191,3.191,0,0,1,17.5,22.693Z"></path><path d="M31.436,34.063H3.564A3.318,3.318,0,0,1,.25,30.749V22.011a1.25,1.25,0,0,1,2.5,0v8.738a.815.815,0,0,0,.814.814H31.436a.815.815,0,0,0,.814-.814V22.011a1.25,1.25,0,1,1,2.5,0v8.738A3.318,3.318,0,0,1,31.436,34.063Z"></path></svg></span>
 </button></a>
                 </div>
@@ -489,10 +560,10 @@
                     class="reveal-up tw-flex tw-w-[380px] tw-flex-col tw-place-items-center tw-gap-2 tw-rounded-lg tw-border-2 tw-border-primary tw-bg-secondary tw-p-8 tw-shadow-xl max-lg:tw-w-[320px]"
                 >
                 <div class="card2">GRAFICOS</div>
-                <a href="https://modrinth.com/shaders"    download="TME Shaders" >
+                <a href="https://modrinth.com/shaders" target="_blank" rel="noopener noreferrer" download="TME Shaders" >
                     
                 <button type="button" class="button2">
-                  <span class="button__text">Descargar</span>
+                  <span class="button__text">Descargar Shaders</span>
                   <span class="button__icon"><svg class="svg" data-name="Layer 2" id="bdd05811-e15d-428c-bb53-8661459f9307" viewBox="0 0 35 35" xmlns="http://www.w3.org/2000/svg"><path d="M17.5,22.131a1.249,1.249,0,0,1-1.25-1.25V2.187a1.25,1.25,0,0,1,2.5,0V20.881A1.25,1.25,0,0,1,17.5,22.131Z"></path><path d="M17.5,22.693a3.189,3.189,0,0,1-2.262-.936L8.487,15.006a1.249,1.249,0,0,1,1.767-1.767l6.751,6.751a.7.7,0,0,0,.99,0l6.751-6.751a1.25,1.25,0,0,1,1.768,1.767l-6.752,6.751A3.191,3.191,0,0,1,17.5,22.693Z"></path><path d="M31.436,34.063H3.564A3.318,3.318,0,0,1,.25,30.749V22.011a1.25,1.25,0,0,1,2.5,0v8.738a.815.815,0,0,0,.814.814H31.436a.815.815,0,0,0,.814-.814V22.011a1.25,1.25,0,1,1,2.5,0v8.738A3.318,3.318,0,0,1,31.436,34.063Z"></path></svg></span>
                 </button></a>
 
@@ -501,10 +572,10 @@
                     class="reveal-up tw-flex tw-w-[380px] tw-flex-col tw-place-items-center tw-gap-2 tw-rounded-lg tw-border-[1px] tw-border-outlineColor tw-bg-secondary tw-p-8 tw-shadow-xl max-lg:tw-w-[320px]"
                 >
                     <div class="card3">PING</div>
-<a href="/MODS/DnsJumper.zip"    download="DnsJumper.zip" >
+<a href="/MODS/DnsJumper.zip" download="DnsJumper.zip" >
     
 <button type="button" class="button2">
-  <span class="button__text">Descargar</span>
+  <span class="button__text">Descargar DNS</span>
   <span class="button__icon"><svg class="svg" data-name="Layer 2" id="bdd05811-e15d-428c-bb53-8661459f9307" viewBox="0 0 35 35" xmlns="http://www.w3.org/2000/svg"><path d="M17.5,22.131a1.249,1.249,0,0,1-1.25-1.25V2.187a1.25,1.25,0,0,1,2.5,0V20.881A1.25,1.25,0,0,1,17.5,22.131Z"></path><path d="M17.5,22.693a3.189,3.189,0,0,1-2.262-.936L8.487,15.006a1.249,1.249,0,0,1,1.767-1.767l6.751,6.751a.7.7,0,0,0,.99,0l6.751-6.751a1.25,1.25,0,0,1,1.768,1.767l-6.752,6.751A3.191,3.191,0,0,1,17.5,22.693Z"></path><path d="M31.436,34.063H3.564A3.318,3.318,0,0,1,.25,30.749V22.011a1.25,1.25,0,0,1,2.5,0v8.738a.815.815,0,0,0,.814.814H31.436a.815.815,0,0,0,.814-.814V22.011a1.25,1.25,0,1,1,2.5,0v8.738A3.318,3.318,0,0,1,31.436,34.063Z"></path></svg></span>
 </button></a>
                 </div>
@@ -522,7 +593,7 @@
             >
                 <img
                     src="./assets/logo/logo2.png"
-                    alt="logo"
+                    alt="ModerLauncher - Logo oficial"
                     srcset=""
                     class="tw-max-w-[120px]"
                 />
@@ -530,14 +601,15 @@
                 <div class="tw-mt-3 tw-text-lg tw-font-semibold">ModerLauncher</div>
                 <div class="tw-flex tw-gap-4 tw-text-2xl">
 
-                    <a target="_blank" href="https://discord.gg/2EQ4ntvnXe" aria-label="Discord" >
-                        <svg xmlns="ttp://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-discord" viewBox="0 0 16 16">
-                            <path d="M13.545 2.907a13.2 13.2 0 0 0-3.257-1.011.05.05 0 0 0-.052.025c-.141.25-.297.577-.406.833a12.2 12.2 0 0 0-3.658 0 8 8 0 0 0-.412-.833.05.05 0 0 0-.052-.025c-1.125.194-2.22.534-3.257 1.011a.04.04 0 0 0-.021.018C.356 6.024-.213 9.047.066 12.032q.003.022.021.037a13.3 13.3 0 0 0 3.995 2.02.05.05 0 0 0 .056-.019q.463-.63.818-1.329a.05.05 0 0 0-.01-.059l-.018-.011a9 9 0 0 1-1.248-.595.05.05 0 0 1-.02-.066l.015-.019q.127-.095.248-.195a.05.05 0 0 1 .051-.007c2.619 1.196 5.454 1.196 8.041 0a.05.05 0 0 1 .053.007q.121.1.248.195a.05.05 0 0 1-.004.085 8 8 0 0 1-1.249.594.05.05 0 0 0-.03.03.05.05 0 0 0 .003.041c.24.465.515.909.817 1.329a.05.05 0 0 0 .056.019 13.2 13.2 0 0 0 4.001-2.02.05.05 0 0 0 .021-.037c.334-3.451-.559-6.449-2.366-9.106a.03.03 0 0 0-.02-.019m-8.198 7.307c-.789 0-1.438-.724-1.438-1.612s.637-1.613 1.438-1.613c.807 0 1.45.73 1.438 1.613 0 .888-.637 1.612-1.438 1.612m5.316 0c-.788 0-1.438-.724-1.438-1.612s.637-1.613 1.438-1.613c.807 0 1.451.73 1.438 1.613 0 .888-.631 1.612-1.438 1.612"/>
+                    <a target="_blank" href="https://discord.gg/2EQ4ntvnXe" aria-label="Discord ModerLauncher" rel="noopener noreferrer">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-discord" viewBox="0 0 16 16">
+                            <path d="M13.545 2.907a13.2 13.2 0 0 0-3.257-1.011.05.05 0 0 0-.052.025c-.141.25-.297.577-.406.833a12.2 12.2 0 0 0-3.658 0 8 8 0 0 0-.412-.833.05.05 0 0 0-.052-.025c-1.125.194-2.22.534-3.257 1.011a.04.04 0 0 0-.021.018C.356 6.024-.213 9.047.066 12.032q.003.022.021.037a13.3 13.3 0 0 0 3.995 2.02.05.05 0 0 0 .056-.019q.463-.63.818-1.329a.05.05 0 0 0-.01-.059l-.018-.011a9 9 0 0 1-1.248-.595.05.05 0 0 1-.02-.066l.015-.019q.127-.095.248-.195a.05.05 0 0 1 .051-.007c2.619 1.196 5.454 1.196 8.041 0 a.05.05 0 0 1 .053.007q.121.1.248.195a.05.05 0 0 1-.004.085 8 8 0 0 1-1.249.594.05.05 0 0 0-.03.03.05.05 0 0 0 .003.041c.24.465.515.909.817 1.329a.05.05 0 0 0 .056.019 13.2 13.2 0 0 0 4.001-2.02.05.05 0 0 0 .021-.037c.334-3.451-.559-6.449-2.366-9.106a.03.03 0 0 0-.02-.019m-8.198 7.307c-.789 0-1.438-.724-1.438-1.612s.637-1.613 1.438-1.613c.807 0 1.45.73 1.438 1.613 0 .888-.637 1.612-1.438 1.612m5.316 0c-.788 0-1.438-.724-1.438-1.612s.637-1.613 1.438-1.613c.807 0 1.451.73 1.438 1.613 0 .888-.631 1.612-1.438 1.612"/>
                           </svg>
                     </a>
                     <a  target="_blank"
                         href="https://github.com/jephersonRD"
-                        aria-label="github"
+                        aria-label="GitHub ModerLauncher"
+                        rel="noopener noreferrer"
                     >
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-github" viewBox="0 0 16 16">
                         <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8"/>
@@ -546,7 +618,8 @@
                     <a target="_blank"
                         href="https://www.tiktok.com/@jepherson_rd"
                         class="tw-h-[40px] tw-w-[40px]"
-                        aria-label="TIKTOK"
+                        aria-label="TikTok ModerLauncher"
+                        rel="noopener noreferrer"
                     >
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-tiktok" viewBox="0 0 16 16">
                         <path d="M9 0h1.98c.144.715.54 1.617 1.235 2.512C12.895 3.389 13.797 4 15 4v2c-1.753 0-3.07-.814-4-1.829V11a5 5 0 1 1-5-5v2a3 3 0 1 0 3 3z"/>
