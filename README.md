@@ -1,7 +1,7 @@
 # ModerLauncher GitHub
 
 <p align="center">
-  <img src="assets/logo/logo.png" alt="ModerLauncher Logo" width="200"/>
+  <img src="assets/logo/logo2.png" alt="ModerLauncher Logo" width="200"/>
 </p>
 
 <p align="center">
@@ -91,3 +91,4 @@ Las contribuciones son bienvenidas. Lee [CONTRIBUTING.md](CONTRIBUTING.md) para 
 <p align="center">
   Hecho con ❤️ por JephersonRD
 </p>
+
