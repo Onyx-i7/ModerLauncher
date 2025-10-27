@@ -13,7 +13,7 @@
 
 Un moderno launcher de Minecraft con interfaz elegante y funciones optimizadas.
 
-![Interfaz del Launcher](assets/fondo/1.png)
+![Interfaz del Launcher](assets/fondo/intefaz-home.png)
 
 ## ✨ Características
 
@@ -91,4 +91,5 @@ Las contribuciones son bienvenidas. Lee [CONTRIBUTING.md](CONTRIBUTING.md) para 
 <p align="center">
   Hecho con ❤️ por JephersonRD
 </p>
+
 
