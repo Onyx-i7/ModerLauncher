@@ -7,6 +7,26 @@ let isHeaderCollapsed = window.innerWidth < RESPONSIVE_WIDTH
 const collapseBtn = document.getElementById("collapse-btn")
 const collapseHeaderItems = document.getElementById("collapsed-header-items")
 
+// Scroll reveal animation
+function revealOnScroll() {
+    const reveals = document.querySelectorAll('.reveal-up');
+    
+    reveals.forEach(element => {
+        const elementTop = element.getBoundingClientRect().top;
+        const windowHeight = window.innerHeight;
+        
+        if (elementTop < windowHeight - 100) {
+            element.classList.add('active');
+        } else {
+            element.classList.remove('active');
+        }
+    });
+}
+
+// Attach scroll event listener
+window.addEventListener('scroll', revealOnScroll);
+// Initial check for elements in view
+revealOnScroll();
 
 
 function onHeaderClickOutside(e) {
