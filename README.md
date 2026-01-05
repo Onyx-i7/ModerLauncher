@@ -45,7 +45,8 @@ Un moderno launcher de Minecraft con interfaz elegante y funciones optimizadas.
 ## 🔧 Requisitos
 
 - Windows 10/11 (64 bits)
-- 4GB RAM mínimo (8GB recomendado)
+- Linux Arch/Ubuntu
+- 2GB RAM mínimo (4GB recomendado)
 - Conexión a Internet
 - 500MB espacio libre
 
@@ -91,5 +92,6 @@ Las contribuciones son bienvenidas. Lee [CONTRIBUTING.md](CONTRIBUTING.md) para 
 <p align="center">
   Hecho con ❤️ por JephersonRD
 </p>
+
 
 
