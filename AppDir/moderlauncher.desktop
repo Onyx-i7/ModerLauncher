@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=ModerLauncher
+Exec=ModerLauncher
+Icon=moderlauncher
+Categories=Game;Utility;
+Terminal=false

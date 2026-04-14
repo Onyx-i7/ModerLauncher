@@ -1,0 +1,5 @@
+#!/bin/sh
+HERE="$(dirname "$(readlink -f "${0}")")"
+APP_SHARE="$HERE/usr/share/moderlauncher"
+export PYTHONPATH="$APP_SHARE:$PYTHONPATH"
+exec /usr/bin/env python3 "$APP_SHARE/main.py" "$@"
