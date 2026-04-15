@@ -1105,6 +1105,21 @@ class ModsWindow(QWidget):
         self.content_cards = []
         self.content_loader = None
         self.current_content_type = "mod"
+        self.current_mode = "explore"  # Nuevo: explore, manage, modpacks
+        
+        # Importar managers
+        try:
+            from managers.mod_manager import ModManager
+            from managers.modpack_manager import ModpackManager
+            from utils.resource_manager import get_minecraft_dir
+            
+            minecraft_dir = get_minecraft_dir()
+            self.mod_manager = ModManager(minecraft_dir)
+            self.modpack_manager = ModpackManager(minecraft_dir)
+        except Exception as e:
+            print(f"Error inicializando managers: {e}")
+            self.mod_manager = None
+            self.modpack_manager = None
         
         if parent:
             self.setGeometry(0, 0, parent.width(), parent.height())
@@ -1123,6 +1138,36 @@ class ModsWindow(QWidget):
                 font-family: "Segoe UI", Arial, sans-serif;
             }
         """)
+        
+        # Definir estilos
+        self.button_style_inactive = """
+            QPushButton {
+                background-color: #2D2D30;
+                color: #AAAAAA;
+                border: 1px solid #3C3C41;
+                border-radius: 6px;
+                font-weight: bold;
+                font-size: 14px;
+                padding: 10px 20px;
+            }
+            QPushButton:hover {
+                background-color: #3C3C41;
+                color: white;
+                border: 1px solid #4CAF50;
+            }
+        """
+        
+        self.button_style_active = """
+            QPushButton {
+                background-color: #4CAF50;
+                color: white;
+                border: 1px solid #4CAF50;
+                border-radius: 6px;
+                font-weight: bold;
+                font-size: 14px;
+                padding: 10px 20px;
+            }
+        """
         
         main_layout = QVBoxLayout(self)
         main_layout.setContentsMargins(15, 15, 15, 15)
@@ -1146,91 +1191,114 @@ class ModsWindow(QWidget):
         nav_layout.setContentsMargins(15, 10, 15, 10)
         nav_layout.setSpacing(10)
         
-        button_style_inactive = """
-            QPushButton {
-                background-color: #2D2D30;
-                color: #AAAAAA;
-                border: 1px solid #3C3C41;
-                border-radius: 6px;
-                font-weight: bold;
-                font-size: 14px;
-                padding: 10px 20px;
-            }
-            QPushButton:hover {
-                background-color: #3C3C41;
-                color: white;
-                border: 1px solid #4CAF50;
-            }
-        """
+        button_style_inactive = self.button_style_inactive
+        button_style_active = self.button_style_active
         
-        button_style_active = """
-            QPushButton {
-                background-color: #4CAF50;
-                color: white;
-                border: 1px solid #4CAF50;
-                border-radius: 6px;
-                font-weight: bold;
-                font-size: 14px;
-                padding: 10px 20px;
-            }
-        """
+        self.explore_btn = QPushButton("🔍 Explorar")
+        self.explore_btn.setFixedSize(150, 40)
+        self.explore_btn.setStyleSheet(button_style_active)
+        self.explore_btn.setCursor(Qt.PointingHandCursor)
+        self.explore_btn.clicked.connect(lambda: self.switch_mode("explore"))
+        nav_layout.addWidget(self.explore_btn)
         
-        self.mods_btn = QPushButton("📦 Mods")
-        self.mods_btn.setFixedSize(150, 40)
-        self.mods_btn.setStyleSheet(button_style_active)
-        self.mods_btn.setCursor(Qt.PointingHandCursor)
-        self.mods_btn.clicked.connect(lambda: self.switch_content_type("mod"))
-        nav_layout.addWidget(self.mods_btn)
+        self.manage_btn = QPushButton("⚙️ Administrar Mods")
+        self.manage_btn.setFixedSize(180, 40)
+        self.manage_btn.setStyleSheet(button_style_inactive)
+        self.manage_btn.setCursor(Qt.PointingHandCursor)
+        self.manage_btn.clicked.connect(lambda: self.switch_mode("manage"))
+        nav_layout.addWidget(self.manage_btn)
         
-        self.shaders_btn = QPushButton("✨ Shaders")
-        self.shaders_btn.setFixedSize(150, 40)
-        self.shaders_btn.setStyleSheet(button_style_inactive)
-        self.shaders_btn.setCursor(Qt.PointingHandCursor)
-        self.shaders_btn.clicked.connect(lambda: self.switch_content_type("shader"))
-        nav_layout.addWidget(self.shaders_btn)
-        
-        self.textures_btn = QPushButton("🎨 Texturas")
-        self.textures_btn.setFixedSize(150, 40)
-        self.textures_btn.setStyleSheet(button_style_inactive)
-        self.textures_btn.setCursor(Qt.PointingHandCursor)
-        self.textures_btn.clicked.connect(lambda: self.switch_content_type("resourcepack"))
-        nav_layout.addWidget(self.textures_btn)
+        self.modpacks_btn = QPushButton("📁 Modpacks")
+        self.modpacks_btn.setFixedSize(150, 40)
+        self.modpacks_btn.setStyleSheet(button_style_inactive)
+        self.modpacks_btn.setCursor(Qt.PointingHandCursor)
+        self.modpacks_btn.clicked.connect(lambda: self.switch_mode("modpacks"))
+        nav_layout.addWidget(self.modpacks_btn)
         
         nav_layout.addStretch()
         
         parent_layout.addWidget(nav_frame)
         
+        # Navegación de tipos de contenido (solo visible en modo explore)
+        self.content_type_nav = QFrame()
+        self.content_type_nav.setFixedHeight(50)
+        self.content_type_nav.setStyleSheet("""
+            QFrame {
+                background-color: #2D2D30;
+                border-radius: 6px;
+                margin-top: 10px;
+            }
+        """)
+        content_nav_layout = QHBoxLayout(self.content_type_nav)
+        content_nav_layout.setContentsMargins(10, 5, 10, 5)
+        content_nav_layout.setSpacing(5)
+        
+        self.mods_btn = QPushButton("📦 Mods")
+        self.mods_btn.setFixedSize(120, 35)
+        self.mods_btn.setStyleSheet(button_style_active)
+        self.mods_btn.setCursor(Qt.PointingHandCursor)
+        self.mods_btn.clicked.connect(lambda: self.switch_content_type("mod"))
+        content_nav_layout.addWidget(self.mods_btn)
+        
+        self.shaders_btn = QPushButton("✨ Shaders")
+        self.shaders_btn.setFixedSize(120, 35)
+        self.shaders_btn.setStyleSheet(button_style_inactive)
+        self.shaders_btn.setCursor(Qt.PointingHandCursor)
+        self.shaders_btn.clicked.connect(lambda: self.switch_content_type("shader"))
+        content_nav_layout.addWidget(self.shaders_btn)
+        
+        self.textures_btn = QPushButton("🎨 Texturas")
+        self.textures_btn.setFixedSize(120, 35)
+        self.textures_btn.setStyleSheet(button_style_inactive)
+        self.textures_btn.setCursor(Qt.PointingHandCursor)
+        self.textures_btn.clicked.connect(lambda: self.switch_content_type("resourcepack"))
+        content_nav_layout.addWidget(self.textures_btn)
+        
+        content_nav_layout.addStretch()
+        parent_layout.addWidget(self.content_type_nav)
+        
         self.button_style_inactive = button_style_inactive
         self.button_style_active = button_style_active
     
-    def switch_content_type(self, content_type):
-        if self.current_content_type == content_type:
+    def switch_mode(self, mode):
+        if self.current_mode == mode:
             return
         
-        self.current_content_type = content_type
+        self.current_mode = mode
         self.current_page = 0
         self.search_query = ""
         self.search_input.clear()
         
-        self.mods_btn.setStyleSheet(self.button_style_active if content_type == "mod" else self.button_style_inactive)
-        self.shaders_btn.setStyleSheet(self.button_style_active if content_type == "shader" else self.button_style_inactive)
-        self.textures_btn.setStyleSheet(self.button_style_active if content_type == "resourcepack" else self.button_style_inactive)
+        # Actualizar botones de navegación
+        self.explore_btn.setStyleSheet(self.button_style_active if mode == "explore" else self.button_style_inactive)
+        self.manage_btn.setStyleSheet(self.button_style_active if mode == "manage" else self.button_style_inactive)
+        self.modpacks_btn.setStyleSheet(self.button_style_active if mode == "modpacks" else self.button_style_inactive)
         
-        titles = {
-            "mod": "📦 Explorar Mods de Minecraft",
-            "shader": "✨ Explorar Shaders de Minecraft",
-            "resourcepack": "🎨 Explorar Texturas de Minecraft"
-        }
-        self.header_title.setText(titles.get(content_type, "Explorar Contenido"))
+        # Limpiar contenido actual
+        self.clear_content_cards()
         
-        placeholders = {
-            "mod": "🔍 Buscar mods...",
-            "shader": "🔍 Buscar shaders...",
-            "resourcepack": "🔍 Buscar texturas..."
-        }
-        self.search_input.setPlaceholderText(placeholders.get(content_type, "🔍 Buscar..."))
-        
-        self.load_content()
+        if mode == "explore":
+            # Modo explorar: mostrar navegación de tipos de contenido
+            if hasattr(self, 'content_type_nav'):
+                self.content_type_nav.show()
+            self.header_title.setText("📦 Explorar Mods de Minecraft")
+            self.search_input.setPlaceholderText("🔍 Buscar mods...")
+            self.current_content_type = "mod"
+            self.load_content()
+        elif mode == "manage":
+            # Modo administrar: mostrar mods instalados
+            if hasattr(self, 'content_type_nav'):
+                self.content_type_nav.hide()
+            self.header_title.setText("⚙️ Administrar Mods Instalados")
+            self.search_input.setPlaceholderText("🔍 Buscar mods instalados...")
+            self.show_mod_management()
+        elif mode == "modpacks":
+            # Modo modpacks: mostrar gestión de modpacks
+            if hasattr(self, 'content_type_nav'):
+                self.content_type_nav.hide()
+            self.header_title.setText("📁 Gestor de Modpacks")
+            self.search_input.setPlaceholderText("🔍 Buscar modpacks...")
+            self.show_modpack_management()
     
     def create_header(self, parent_layout):
         header_frame = QFrame()
@@ -1529,6 +1597,608 @@ class ModsWindow(QWidget):
         self.page_label.setText(f"Página {self.current_page + 1}")
         self.prev_button.setEnabled(self.current_page > 0)
         self.next_button.setEnabled(len(self.content_data) >= self.page_size)
+    
+    def show_mod_management(self):
+        """Mostrar interfaz de administración de mods"""
+        self.clear_content_cards()
+        
+        if not self.mod_manager:
+            error_label = QLabel("❌ Error: No se pudo inicializar el administrador de mods")
+            error_label.setStyleSheet("""
+                QLabel {
+                    color: #FF6B6B;
+                    font-size: 16px;
+                    padding: 80px;
+                    background: transparent;
+                }
+            """)
+            error_label.setAlignment(Qt.AlignCenter)
+            self.content_layout.addWidget(error_label)
+            return
+        
+        # Escanear mods instalados
+        installed_mods = self.mod_manager.scan_installed_mods()
+        
+        if not installed_mods:
+            no_mods_label = QLabel("📦 No hay mods instalados\n\nUsa la pestaña 'Explorar' para descargar mods")
+            no_mods_label.setStyleSheet("""
+                QLabel {
+                    color: #AAAAAA;
+                    font-size: 16px;
+                    padding: 80px;
+                    background: transparent;
+                }
+            """)
+            no_mods_label.setAlignment(Qt.AlignCenter)
+            self.content_layout.addWidget(no_mods_label)
+        else:
+            # Mostrar lista de mods
+            for mod_info in installed_mods:
+                mod_card = ModManagementCard(mod_info, self.mod_manager, self)
+                self.content_layout.addWidget(mod_card)
+        
+        self.content_layout.addStretch()
+    
+    def show_modpack_management(self):
+        """Mostrar interfaz de gestión de modpacks"""
+        self.clear_content_cards()
+        
+        if not self.modpack_manager:
+            error_label = QLabel("❌ Error: No se pudo inicializar el gestor de modpacks")
+            error_label.setStyleSheet("""
+                QLabel {
+                    color: #FF6B6B;
+                    font-size: 16px;
+                    padding: 80px;
+                    background: transparent;
+                }
+            """)
+            error_label.setAlignment(Qt.AlignCenter)
+            self.content_layout.addWidget(error_label)
+            return
+        
+        # Escanear modpacks
+        modpacks = self.modpack_manager.scan_modpacks()
+        
+        # Botones de acción
+        actions_frame = QFrame()
+        actions_frame.setStyleSheet("""
+            QFrame {
+                background-color: #252526;
+                border-radius: 8px;
+                margin-bottom: 15px;
+            }
+        """)
+        actions_layout = QHBoxLayout(actions_frame)
+        actions_layout.setContentsMargins(15, 10, 15, 10)
+        
+        create_btn = QPushButton("➕ Crear Modpack")
+        create_btn.setStyleSheet("""
+            QPushButton {
+                background-color: #4CAF50;
+                color: white;
+                border: none;
+                border-radius: 5px;
+                padding: 8px 15px;
+                font-weight: bold;
+            }
+            QPushButton:hover {
+                background-color: #45a049;
+            }
+        """)
+        create_btn.clicked.connect(self.create_modpack)
+        actions_layout.addWidget(create_btn)
+        
+        import_btn = QPushButton("📥 Importar Modpack")
+        import_btn.setStyleSheet("""
+            QPushButton {
+                background-color: #2196F3;
+                color: white;
+                border: none;
+                border-radius: 5px;
+                padding: 8px 15px;
+                font-weight: bold;
+            }
+            QPushButton:hover {
+                background-color: #1976D2;
+            }
+        """)
+        import_btn.clicked.connect(self.import_modpack)
+        actions_layout.addWidget(import_btn)
+        
+        actions_layout.addStretch()
+        self.content_layout.addWidget(actions_frame)
+        
+        if not modpacks:
+            no_packs_label = QLabel("📁 No hay modpacks\n\nCrea un modpack desde tus mods instalados")
+            no_packs_label.setStyleSheet("""
+                QLabel {
+                    color: #AAAAAA;
+                    font-size: 16px;
+                    padding: 80px;
+                    background: transparent;
+                }
+            """)
+            no_packs_label.setAlignment(Qt.AlignCenter)
+            self.content_layout.addWidget(no_packs_label)
+        else:
+            # Mostrar lista de modpacks
+            for modpack_info in modpacks:
+                pack_card = ModpackCard(modpack_info, self.modpack_manager, self)
+                self.content_layout.addWidget(pack_card)
+        
+        self.content_layout.addStretch()
+    
+    def create_modpack(self):
+        """Crear un nuevo modpack"""
+        if not self.modpack_manager:
+            QMessageBox.warning(self, "Error", "No se pudo acceder al gestor de modpacks")
+            return
+        
+        # Obtener directorio de mods
+        from utils.resource_manager import get_minecraft_dir
+        from pathlib import Path
+        minecraft_dir = get_minecraft_dir()
+        mods_dir = Path(minecraft_dir) / "mods"
+        
+        if not mods_dir.exists() or not list(mods_dir.glob("*.jar")):
+            QMessageBox.warning(self, "Error", "No hay mods instalados para crear un modpack")
+            return
+        
+        # Diálogo para crear modpack
+        dialog = CreateModpackDialog(self.modpack_manager, str(mods_dir), self)
+        if dialog.exec_() == QDialog.Accepted:
+            self.show_modpack_management()  # Refrescar vista
+    
+    def import_modpack(self):
+        """Importar un modpack desde archivo"""
+        file_path, _ = QFileDialog.getOpenFileName(
+            self, "Seleccionar archivo de modpack", "", "Archivos ZIP (*.zip)"
+        )
+        
+        if file_path and self.modpack_manager:
+            pack_id = self.modpack_manager.import_modpack(file_path)
+            if pack_id:
+                QMessageBox.information(self, "Éxito", "Modpack importado correctamente")
+                self.show_modpack_management()  # Refrescar vista
+            else:
+                QMessageBox.warning(self, "Error", "No se pudo importar el modpack")
+
+
+# ==================== TARJETA DE GESTIÓN DE MOD ====================
+
+class ModManagementCard(QFrame):
+    """Tarjeta para gestionar un mod instalado"""
+    def __init__(self, mod_info, mod_manager, parent=None):
+        super().__init__(parent)
+        self.mod_info = mod_info
+        self.mod_manager = mod_manager
+        self.setup_ui()
+    
+    def setup_ui(self):
+        self.setStyleSheet("""
+            QFrame {
+                background-color: #2D2D30;
+                border-radius: 8px;
+                border: 1px solid #3C3C41;
+            }
+            QFrame:hover {
+                background-color: #333337;
+                border: 1px solid #4CAF50;
+            }
+        """)
+        
+        layout = QHBoxLayout(self)
+        layout.setContentsMargins(12, 12, 12, 12)
+        layout.setSpacing(12)
+        
+        # Información del mod
+        info_layout = QVBoxLayout()
+        info_layout.setSpacing(5)
+        
+        title_label = QLabel(f"{self.mod_info.name}")
+        title_label.setStyleSheet("""
+            QLabel {
+                color: white;
+                font-size: 15px;
+                font-weight: bold;
+            }
+        """)
+        info_layout.addWidget(title_label)
+        
+        version_label = QLabel(f"Versión: {self.mod_info.version}")
+        version_label.setStyleSheet("""
+            QLabel {
+                color: #CCCCCC;
+                font-size: 12px;
+            }
+        """)
+        info_layout.addWidget(version_label)
+        
+        status_text = "✅ Habilitado" if self.mod_info.enabled else "❌ Deshabilitado"
+        status_label = QLabel(status_text)
+        status_label.setStyleSheet("""
+            QLabel {
+                color: #4CAF50 if self.mod_info.enabled else #FF6B6B;
+                font-size: 12px;
+                font-weight: bold;
+            }
+        """)
+        info_layout.addWidget(status_label)
+        
+        info_layout.addStretch()
+        layout.addLayout(info_layout, stretch=1)
+        
+        # Botones de acción
+        buttons_layout = QVBoxLayout()
+        buttons_layout.setSpacing(8)
+        
+        toggle_btn = QPushButton("🔄 Habilitar" if not self.mod_info.enabled else "🔄 Deshabilitar")
+        toggle_btn.setFixedSize(120, 32)
+        toggle_btn.setStyleSheet("""
+            QPushButton {
+                background-color: #FF9800;
+                color: white;
+                border: none;
+                border-radius: 4px;
+                font-weight: bold;
+                font-size: 11px;
+            }
+            QPushButton:hover {
+                background-color: #F57C00;
+            }
+        """)
+        toggle_btn.clicked.connect(self.toggle_mod)
+        buttons_layout.addWidget(toggle_btn)
+        
+        delete_btn = QPushButton("🗑️ Eliminar")
+        delete_btn.setFixedSize(120, 32)
+        delete_btn.setStyleSheet("""
+            QPushButton {
+                background-color: #F44336;
+                color: white;
+                border: none;
+                border-radius: 4px;
+                font-weight: bold;
+                font-size: 11px;
+            }
+            QPushButton:hover {
+                background-color: #D32F2F;
+            }
+        """)
+        delete_btn.clicked.connect(self.delete_mod)
+        buttons_layout.addWidget(delete_btn)
+        
+        buttons_layout.addStretch()
+        layout.addLayout(buttons_layout)
+    
+    def toggle_mod(self):
+        """Habilitar/deshabilitar mod"""
+        if self.mod_manager.toggle_mod(self.mod_info.name):
+            # Refrescar la vista
+            parent_window = self.parent()
+            while parent_window and not isinstance(parent_window, ModsWindow):
+                parent_window = parent_window.parent()
+            if parent_window:
+                parent_window.show_mod_management()
+        else:
+            QMessageBox.warning(self, "Error", "No se pudo cambiar el estado del mod")
+    
+    def delete_mod(self):
+        """Eliminar mod"""
+        reply = QMessageBox.question(
+            self, "Confirmar eliminación",
+            f"¿Estás seguro de que deseas eliminar '{self.mod_info.name}'?",
+            QMessageBox.Yes | QMessageBox.No
+        )
+        
+        if reply == QMessageBox.Yes:
+            if self.mod_manager.uninstall_mod(self.mod_info.name):
+                # Refrescar la vista
+                parent_window = self.parent()
+                while parent_window and not isinstance(parent_window, ModsWindow):
+                    parent_window = parent_window.parent()
+                if parent_window:
+                    parent_window.show_mod_management()
+            else:
+                QMessageBox.warning(self, "Error", "No se pudo eliminar el mod")
+
+
+# ==================== TARJETA DE MODPACK ====================
+
+class ModpackCard(QFrame):
+    """Tarjeta para gestionar un modpack"""
+    def __init__(self, modpack_info, modpack_manager, parent=None):
+        super().__init__(parent)
+        self.modpack_info = modpack_info
+        self.modpack_manager = modpack_manager
+        self.setup_ui()
+    
+    def setup_ui(self):
+        self.setStyleSheet("""
+            QFrame {
+                background-color: #2D2D30;
+                border-radius: 8px;
+                border: 1px solid #3C3C41;
+            }
+            QFrame:hover {
+                background-color: #333337;
+                border: 1px solid #4CAF50;
+            }
+        """)
+        
+        layout = QHBoxLayout(self)
+        layout.setContentsMargins(12, 12, 12, 12)
+        layout.setSpacing(12)
+        
+        # Información del modpack
+        info_layout = QVBoxLayout()
+        info_layout.setSpacing(5)
+        
+        title_label = QLabel(f"{self.modpack_info.name}")
+        title_label.setStyleSheet("""
+            QLabel {
+                color: white;
+                font-size: 15px;
+                font-weight: bold;
+            }
+        """)
+        info_layout.addWidget(title_label)
+        
+        version_label = QLabel(f"Versión: {self.modpack_info.version}")
+        version_label.setStyleSheet("""
+            QLabel {
+                color: #CCCCCC;
+                font-size: 12px;
+            }
+        """)
+        info_layout.addWidget(version_label)
+        
+        mc_label = QLabel(f"Minecraft: {self.modpack_info.minecraft_version}")
+        mc_label.setStyleSheet("""
+            QLabel {
+                color: #CCCCCC;
+                font-size: 12px;
+            }
+        """)
+        info_layout.addWidget(mc_label)
+        
+        mods_count = len(self.modpack_info.mods)
+        mods_label = QLabel(f"Mods: {mods_count}")
+        mods_label.setStyleSheet("""
+            QLabel {
+                color: #888888;
+                font-size: 11px;
+            }
+        """)
+        info_layout.addWidget(mods_label)
+        
+        info_layout.addStretch()
+        layout.addLayout(info_layout, stretch=1)
+        
+        # Botones de acción
+        buttons_layout = QVBoxLayout()
+        buttons_layout.setSpacing(8)
+        
+        install_btn = QPushButton("📦 Instalar")
+        install_btn.setFixedSize(100, 32)
+        install_btn.setStyleSheet("""
+            QPushButton {
+                background-color: #4CAF50;
+                color: white;
+                border: none;
+                border-radius: 4px;
+                font-weight: bold;
+                font-size: 11px;
+            }
+            QPushButton:hover {
+                background-color: #45a049;
+            }
+        """)
+        install_btn.clicked.connect(self.install_modpack)
+        buttons_layout.addWidget(install_btn)
+        
+        export_btn = QPushButton("📤 Exportar")
+        export_btn.setFixedSize(100, 32)
+        export_btn.setStyleSheet("""
+            QPushButton {
+                background-color: #2196F3;
+                color: white;
+                border: none;
+                border-radius: 4px;
+                font-weight: bold;
+                font-size: 11px;
+            }
+            QPushButton:hover {
+                background-color: #1976D2;
+            }
+        """)
+        export_btn.clicked.connect(self.export_modpack)
+        buttons_layout.addWidget(export_btn)
+        
+        delete_btn = QPushButton("🗑️ Eliminar")
+        delete_btn.setFixedSize(100, 32)
+        delete_btn.setStyleSheet("""
+            QPushButton {
+                background-color: #F44336;
+                color: white;
+                border: none;
+                border-radius: 4px;
+                font-weight: bold;
+                font-size: 11px;
+            }
+            QPushButton:hover {
+                background-color: #D32F2F;
+            }
+        """)
+        delete_btn.clicked.connect(self.delete_modpack)
+        buttons_layout.addWidget(delete_btn)
+        
+        buttons_layout.addStretch()
+        layout.addLayout(buttons_layout)
+    
+    def install_modpack(self):
+        """Instalar modpack"""
+        from utils.resource_manager import get_minecraft_dir
+        from pathlib import Path
+        minecraft_dir = get_minecraft_dir()
+        mods_dir = Path(minecraft_dir) / "mods"
+        
+        reply = QMessageBox.question(
+            self, "Confirmar instalación",
+            f"¿Instalar '{self.modpack_info.name}'? Esto reemplazará los mods actuales.",
+            QMessageBox.Yes | QMessageBox.No
+        )
+        
+        if reply == QMessageBox.Yes:
+            if self.modpack_manager.install_modpack(self.modpack_info.name, str(mods_dir)):
+                QMessageBox.information(self, "Éxito", "Modpack instalado correctamente")
+            else:
+                QMessageBox.warning(self, "Error", "No se pudo instalar el modpack")
+    
+    def export_modpack(self):
+        """Exportar modpack"""
+        file_path, _ = QFileDialog.getSaveFileName(
+            self, "Guardar modpack", f"{self.modpack_info.name}.zip", "Archivos ZIP (*.zip)"
+        )
+        
+        if file_path:
+            if self.modpack_manager.export_modpack(self.modpack_info.name, file_path):
+                QMessageBox.information(self, "Éxito", "Modpack exportado correctamente")
+            else:
+                QMessageBox.warning(self, "Error", "No se pudo exportar el modpack")
+    
+    def delete_modpack(self):
+        """Eliminar modpack"""
+        reply = QMessageBox.question(
+            self, "Confirmar eliminación",
+            f"¿Estás seguro de que deseas eliminar '{self.modpack_info.name}'?",
+            QMessageBox.Yes | QMessageBox.No
+        )
+        
+        if reply == QMessageBox.Yes:
+            if self.modpack_manager.delete_modpack(self.modpack_info.name):
+                # Refrescar la vista
+                parent_window = self.parent()
+                while parent_window and not isinstance(parent_window, ModsWindow):
+                    parent_window = parent_window.parent()
+                if parent_window:
+                    parent_window.show_modpack_management()
+            else:
+                QMessageBox.warning(self, "Error", "No se pudo eliminar el modpack")
+
+
+# ==================== DIÁLOGO PARA CREAR MODPACK ====================
+
+class CreateModpackDialog(QDialog):
+    """Diálogo para crear un nuevo modpack"""
+    def __init__(self, modpack_manager, mods_dir, parent=None):
+        super().__init__(parent)
+        self.modpack_manager = modpack_manager
+        self.mods_dir = mods_dir
+        self.setWindowTitle("Crear Modpack")
+        self.setFixedSize(400, 300)
+        self.setModal(True)
+        self.setup_ui()
+    
+    def setup_ui(self):
+        layout = QVBoxLayout()
+        layout.setSpacing(15)
+        layout.setContentsMargins(20, 20, 20, 20)
+        
+        # Nombre
+        name_label = QLabel("Nombre del modpack:")
+        name_label.setStyleSheet("font-weight: bold;")
+        layout.addWidget(name_label)
+        
+        self.name_input = QLineEdit()
+        self.name_input.setPlaceholderText("Mi Modpack")
+        layout.addWidget(self.name_input)
+        
+        # Versión de Minecraft
+        mc_label = QLabel("Versión de Minecraft:")
+        mc_label.setStyleSheet("font-weight: bold;")
+        layout.addWidget(mc_label)
+        
+        self.mc_input = QLineEdit()
+        self.mc_input.setPlaceholderText("1.20.1")
+        layout.addWidget(self.mc_input)
+        
+        # Modloader
+        loader_label = QLabel("Modloader:")
+        loader_label.setStyleSheet("font-weight: bold;")
+        layout.addWidget(loader_label)
+        
+        self.loader_combo = QComboBox()
+        self.loader_combo.addItem("Forge")
+        self.loader_combo.addItem("Fabric")
+        self.loader_combo.addItem("NeoForge")
+        layout.addWidget(self.loader_combo)
+        
+        # Descripción
+        desc_label = QLabel("Descripción (opcional):")
+        desc_label.setStyleSheet("font-weight: bold;")
+        layout.addWidget(desc_label)
+        
+        self.desc_input = QTextEdit()
+        self.desc_input.setMaximumHeight(60)
+        layout.addWidget(self.desc_input)
+        
+        # Botones
+        buttons_layout = QHBoxLayout()
+        
+        cancel_btn = QPushButton("Cancelar")
+        cancel_btn.clicked.connect(self.reject)
+        buttons_layout.addWidget(cancel_btn)
+        
+        create_btn = QPushButton("Crear")
+        create_btn.setStyleSheet("""
+            QPushButton {
+                background-color: #4CAF50;
+                color: white;
+                border: none;
+                border-radius: 5px;
+                padding: 8px 20px;
+                font-weight: bold;
+            }
+            QPushButton:hover {
+                background-color: #45a049;
+            }
+        """)
+        create_btn.clicked.connect(self.create_modpack)
+        buttons_layout.addWidget(create_btn)
+        
+        layout.addLayout(buttons_layout)
+        self.setLayout(layout)
+    
+    def create_modpack(self):
+        """Crear el modpack"""
+        name = self.name_input.text().strip()
+        mc_version = self.mc_input.text().strip()
+        modloader = self.loader_combo.currentText().lower()
+        description = self.desc_input.toPlainText().strip()
+        
+        if not name or not mc_version:
+            QMessageBox.warning(self, "Error", "Nombre y versión de Minecraft son obligatorios")
+            return
+        
+        # Crear modpack
+        pack_id = self.modpack_manager.create_modpack(
+            name=name,
+            minecraft_version=mc_version,
+            modloader=modloader,
+            modloader_version="Desconocida",  # Podría mejorarse
+            mods_dir=self.mods_dir,
+            description=description,
+            author="Usuario"  # Podría obtenerse del perfil
+        )
+        
+        if pack_id:
+            QMessageBox.information(self, "Éxito", "Modpack creado correctamente")
+            self.accept()
+        else:
+            QMessageBox.warning(self, "Error", "No se pudo crear el modpack")
+
 
 # ==================== PRUEBA INDEPENDIENTE ====================
 

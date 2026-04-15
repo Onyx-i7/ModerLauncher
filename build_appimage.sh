@@ -78,6 +78,11 @@ EOF
 cp "$APPDIR/usr/share/applications/moderlauncher.desktop" "$APPDIR/"
 cp "$ICON_DST" "$APPDIR/moderlauncher.png"
 
+# Si existe el AppImage, eliminarlo para evitar errores al crear uno nuevo
+if [ -f "${APP_NAME}.AppImage" ]; then
+    rm -f "${APP_NAME}.AppImage"
+fi
+
 # Crear AppImage
 ARCH=x86_64 appimagetool "$APPDIR" "${APP_NAME}.AppImage"
 
