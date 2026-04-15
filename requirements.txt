@@ -1,0 +1,8 @@
+PyQt5>=5.15.0
+minecraft-launcher-lib>=6.0.0
+Pillow>=9.0.0
+pygame>=2.0.0
+requests>=2.25.0
+cryptography>=3.4.0
+certifi>=2021.5.30
+psutil>=5.8.0

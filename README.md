@@ -64,6 +64,47 @@ Un moderno launcher de Minecraft con interfaz elegante y funciones optimizadas.
 4. Ajusta RAM y CPU en **Configuración**
 5. Haz clic en **PLAY**
 
+## 🔨 Construcción
+
+### Linux (AppImage)
+
+Para construir el AppImage en sistemas Linux:
+
+1. **Instala dependencias del sistema:**
+   ```bash
+   sudo apt update
+   sudo apt install python3 python3-pip python3-venv fuse libfuse2 appimagetool
+   ```
+
+2. **Clona el repositorio:**
+   ```bash
+   git clone https://github.com/tuusuario/ModerLauncher.git
+   cd ModerLauncher
+   ```
+
+3. **Instala dependencias de Python:**
+   ```bash
+   pip3 install --break-system-packages -r requirements.txt
+   ```
+
+4. **Ejecuta el script de construcción:**
+   ```bash
+   chmod +x build_appimage.sh
+   ./build_appimage.sh
+   ```
+
+5. **Resultado:**
+   - El AppImage se creará en la carpeta raíz: `ModerLauncher.AppImage` (~67MB)
+   - Archivo ejecutable portable que funciona en sistemas Linux con Python 3.11+
+
+### Windows (EXE)
+
+Para construir el instalador EXE en Windows:
+
+1. Instala Python 3.11+
+2. Instala dependencias: `pip install -r requirements.txt`
+3. Ejecuta: `python build_windows.py`
+
 ## 🌟 Próximas Características
 
 - [ ] Gestor de modpacks
